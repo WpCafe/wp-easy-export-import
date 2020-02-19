@@ -746,6 +746,9 @@ class WP_Easy_Export_Import {
 
         $replaced_content = $post_arr['post_content'];
 
+        // Replace url.
+        $replaced_content = $this->replace_all_url( $replaced_content );
+
         if ( ! empty( $replaced_images ) ) {
             foreach ( $replaced_images as $old => $new ) {
                 $replaced_content = str_replace( $old, $new, $replaced_content );
@@ -858,6 +861,32 @@ class WP_Easy_Export_Import {
                 }
             }
         }
+    }
+
+    /**
+     * replace all links of host site with guest site.
+     *
+     * @param mixed $string
+     * @return mixed
+     */
+    private function replace_all_url( $string ) {
+        $options = get_option( 'wp_easy_export_import_guest', false );
+
+        preg_match_all( "|<a.*(?=href=\"([^\"]*)\")[^>]*>([^<]*)</a>|i", $string, $matches );
+
+        $host_url  = rtrim( $options['url'], '/' );
+        $guest_url = str_replace( 'http://', '', get_site_url( null, '', 'http') );
+
+        if ( ! empty( $matches ) && ! empty( $matches[1] ) ) {
+            foreach( $matches[1] as $link ) {
+                if ( false !== strpos( $link, $host_url ) ) {
+                    $new_link = str_replace( $host_url, $guest_url, $link );
+                    $string = str_replace( $link, $new_link, $string );
+                }
+            }
+        }
+
+        return $string;
     }
 }
 
