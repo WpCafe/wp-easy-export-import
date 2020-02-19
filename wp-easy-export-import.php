@@ -480,7 +480,7 @@ class WP_Easy_Export_Import {
 
         $posts = new WP_Query( [
             'post_type'      => $options['post_type'],
-            'post_status'    => 'all',
+            'post_status'    => 'publish',
             'paged'          => $paged,
             'posts_per_page' => 1,
         ]);
@@ -490,7 +490,7 @@ class WP_Easy_Export_Import {
         if ( $posts->have_posts() ) {
             while( $posts->have_posts() ) {
                 $posts->the_post();
-                $p = get_post();
+                $p = get_post( null, 'OBJECT', 'display' );
                 $terms = [];
 
                 $terms[] = wp_get_post_terms( $p->ID );
