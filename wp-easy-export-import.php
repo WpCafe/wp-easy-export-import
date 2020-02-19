@@ -480,7 +480,7 @@ class WP_Easy_Export_Import {
 
         $posts = new WP_Query( [
             'post_type'      => $options['post_type'],
-            'post_status'    => 'publish',
+            'post_status'    => 'all',
             'paged'          => $paged,
             'posts_per_page' => 1,
         ]);
