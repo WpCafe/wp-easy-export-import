@@ -10,7 +10,7 @@
 // Prevent direct access to file.
 defined( 'ABSPATH' ) or exit;
 
-// Set plugin url.
+// Set plugin url and dir.
 define( 'WPEEI_DIR', plugin_dir_path( __FILE__ ) );
 define( 'WPEEI_URL', plugin_dir_url( __FILE__ ) );
 
